@@ -1,26 +1,15 @@
 const { pbkdf2 } = require('crypto');
 
-function playCpu(message, threads) {
+function playCpu(threads = 1) {
   const start = Date.now();
   for (let i = 1; i <= threads; i++) {
     pbkdf2('a', 'b', 100000, 512, 'sha512', () => {
-      console.log(`Thread ${i}: `, Date.now() - start);
+      console.log(`${i} [${new Date().getTime()}]: `, Date.now() - start);
     });
   }
-  pbkdf2('a', 'b', 100000, 512, 'sha512', () => {
-    console.log('1: ', Date.now() - start);
-  });
-  pbkdf2('a', 'b', 100000, 512, 'sha512', () => {
-    console.log('2: ', Date.now() - start);
-  });
-  pbkdf2('a', 'b', 100000, 512, 'sha512', () => {
-    console.log('3: ', Date.now() - start);
-  });
-  pbkdf2('a', 'b', 100000, 512, 'sha512', () => {
-    console.log('4: ', Date.now() - start);
-  });
-  pbkdf2('a', 'b', 100000, 512, 'sha512', () => {
-    console.log('5: ', Date.now() - start);
-  });
+  // pbkdf2('a', 'b', 100000, 512, 'sha512', () => {
+  //   console.log('1: ', Date.now() - start);
+  // });
+
 }
-playCpu();
+playCpu(6);

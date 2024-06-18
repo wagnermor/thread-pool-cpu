@@ -1,25 +1,19 @@
-process.env.UV_THREADPOLL_SIZE = 2
+const env = require('node:process');
+process.env.UV_THREADPOLL_SIZE = 2;
+
 const { pbkdf2 } = require('crypto');
 const start = Date.now();
 
-pbkdf2('a', 'b', 100000, 512, 'sha512', () => {
-  console.log('1: ', Date.now() - start);
-});
-pbkdf2('a', 'b', 100000, 512, 'sha512', () => {
-  console.log('1: ', Date.now() - start);
-});
-pbkdf2('a', 'b', 100000, 512, 'sha512', () => {
-  console.log('2: ', Date.now() - start);
-});
-pbkdf2('a', 'b', 100000, 512, 'sha512', () => {
-  console.log('3: ', Date.now() - start);
-  return `3: ${Date.now() - start}`;
-});
-pbkdf2('a', 'b', 100000, 512, 'sha512', () => {
-  console.log('4: ', Date.now() - start);
-  return `4: ${Date.now() - start}`;
-});
-pbkdf2('a', 'b', 100000, 512, 'sha512', () => {
-  console.log('5: ', Date.now() - start);
-  return `5: ${Date.now() - start}`;
-});
+function playCpu(threads = 1) {
+  console.log(process.env);
+  // console.log(env);
+  for (let i = 1; i <= threads; i++) {
+    pbkdf2('anjunPassword', 'anjunSalt', 100000, 512, 'sha512', (err, derivedKey) => {
+      if (err) throw err;
+      console.log(derivedKey.toString('hex'));
+      console.log(`${i} [${new Date().getTime()}]: `, Date.now() - start);
+    });
+  }
+}
+
+playCpu(5);
